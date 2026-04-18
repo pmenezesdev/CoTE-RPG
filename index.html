@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tokyo Metropolitan Ironclad Academy • Convocação</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+      :root {
+        --primary: #c8102e;
+        --accent: #ffd700;
+        --bg-dark: #0a0a0a;
+        --paper: #f4eee0;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Crimson Text", serif;
+        background: #0a0a0a;
+        background-image: 
+          radial-gradient(circle at center, rgba(30, 30, 50, 0.2) 0%, rgba(5, 5, 5, 1) 100%),
+          url('https://www.transparenttextures.com/patterns/dark-leather.png');
+        color: #e0e0e0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow-x: hidden;
+        padding: 15px;
+      }
+
+      .particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.3;
+      }
+
+      /* ==================== TELA 1 - ENVELOPE ==================== */
+      .screen1 {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 920px;
+        text-align: center;
+        transition: opacity 1s ease;
+      }
+
+      .envelope {
+        background: var(--paper);
+        background-image: 
+          linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)),
+          url('https://www.transparenttextures.com/patterns/linen-paper.png');
+        border: 1px solid #d4cbb3;
+        padding: 100px 40px;
+        box-shadow: 0 40px 120px rgba(0, 0, 0, 0.9);
+        cursor: pointer;
+        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border-radius: 2px;
+        position: relative;
+        overflow: hidden;
+        color: #1a1a1a;
+      }
+
+      .envelope::before {
+        content: "";
+        position: absolute;
+        inset: 15px;
+        border: 1px solid rgba(200, 16, 46, 0.2);
+        pointer-events: none;
+      }
+
+      .envelope::after {
+        content: "";
+        position: absolute;
+        inset: 20px;
+        border: 2px solid var(--accent);
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
+      .envelope:hover {
+        transform: scale(1.01) translateY(-5px);
+        box-shadow: 0 60px 140px rgba(0, 0, 0, 1);
+      }
+
+      .seal {
+        position: absolute;
+        top: -45px;
+        right: 60px;
+        width: 130px;
+        height: 130px;
+        background: radial-gradient(circle at 30% 30%, #e6193a, #8b0000);
+        border: 2px solid #ffd700;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffd700;
+        font-family: 'Cinzel', serif;
+        font-weight: 900;
+        font-size: 12px;
+        text-align: center;
+        line-height: 1.2;
+        box-shadow: 
+          inset -5px -5px 15px rgba(0,0,0,0.5),
+          0 15px 35px rgba(0, 0, 0, 0.8);
+        transform: rotate(15deg);
+        z-index: 3;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+      }
+
+      .title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(2.2rem, 8vw, 4rem);
+        font-weight: 900;
+        letter-spacing: 10px;
+        color: var(--primary);
+        text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+        margin-bottom: 12px;
+        text-transform: uppercase;
+      }
+
+      .subtitle {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(0.9rem, 3vw, 1.2rem);
+        color: #555;
+        letter-spacing: 12px;
+        margin-bottom: 45px;
+        font-weight: 400;
+        opacity: 0.9;
+      }
+
+      .open-btn {
+        margin-top: 25px;
+        padding: 20px 60px;
+        background: #000;
+        color: var(--accent);
+        font-family: 'Cinzel', serif;
+        font-size: 1rem;
+        font-weight: bold;
+        letter-spacing: 5px;
+        border: 1px solid var(--accent);
+        border-radius: 0;
+        cursor: pointer;
+        transition: all 0.4s;
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .open-btn:hover {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      /* ==================== TELA 2 - CARTA ==================== */
+      .screen2 {
+        display: none;
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 850px;
+        background: var(--paper);
+        background-image: 
+          linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)),
+          url('https://www.transparenttextures.com/patterns/linen-paper.png');
+        color: #1a1a1a;
+        padding: 80px 60px;
+        box-shadow: 0 40px 120px rgba(0, 0, 0, 0.9);
+        border: 1px solid #d4cbb3;
+        line-height: 1.8;
+        font-family: 'Crimson Text', serif;
+        font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+      }
+
+      .letter-border {
+        position: absolute;
+        inset: 20px;
+        border: 1px solid rgba(200, 16, 46, 0.2);
+        pointer-events: none;
+      }
+
+      .letter-border::before {
+        content: "";
+        position: absolute;
+        inset: 5px;
+        border: 2px solid var(--accent);
+        opacity: 0.4;
+      }
+
+      .points-header {
+        position: absolute;
+        top: 40px;
+        right: 50px;
+        text-align: right;
+        font-family: 'Cinzel', serif;
+        border-bottom: 2px solid var(--primary);
+      }
+
+      .points-label { font-size: 0.7rem; color: #666; letter-spacing: 2px; }
+      .points-value { font-size: 1.4rem; color: var(--primary); font-weight: 900; }
+
+      .professor-img {
+        width: 100%;
+        max-width: 200px;
+        height: 250px;
+        float: right;
+        margin: 40px 0 20px 30px;
+        border: 1px solid #000;
+        filter: sepia(0.3) contrast(1.1);
+        box-shadow: 15px 15px 0 rgba(200, 16, 46, 0.1);
+        border-radius: 2px;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 2s ease;
+      }
+
+      .reveal-item {
+        opacity: 0;
+        transform: translateY(15px);
+        transition: all 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+        margin-bottom: 20px;
+      }
+
+      .reveal-item.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      h1 {
+        font-family: 'Cinzel', serif;
+        color: var(--primary);
+        font-size: clamp(1.8rem, 7vw, 2.8rem);
+        text-align: left;
+        margin: 40px 0 30px;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        font-weight: 900;
+      }
+
+      /* Assinatura */
+      .signatures-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-top: 60px;
+      }
+
+      .user-signature-wrapper {
+        flex: 1;
+        text-align: left;
+        max-width: 300px;
+        border-bottom: 1px solid #333;
+        margin-bottom: 15px;
+        min-height: 60px;
+      }
+
+      #userSignature {
+        font-family: 'Dancing Script', cursive;
+        font-size: 2.2rem;
+        color: #000;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: opacity 2s ease, transform 2s ease;
+      }
+
+      #userSignature.signed {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .signature {
+        text-align: right;
+        font-family: 'Crimson Text', serif;
+        font-size: 1.8rem;
+        font-style: italic;
+        position: relative;
+        flex: 1;
+      }
+
+      .signature::after {
+        content: "CONFIDENCIAL";
+        position: absolute;
+        bottom: -20px;
+        right: 0;
+        font-family: 'Cinzel', serif;
+        font-size: 0.7rem;
+        color: var(--primary);
+        letter-spacing: 5px;
+        opacity: 0.6;
+      }
+
+      .response-form {
+        margin-top: 50px;
+        display: none;
+        background: rgba(200, 16, 46, 0.03);
+        padding: 40px;
+        border: 1px dashed var(--accent);
+        animation: fadeIn 1.5s forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        background: #fff;
+        border: 1px solid #ccc;
+        color: #333;
+        font-size: 1rem;
+        border-radius: 4px;
+      }
+
+      .btn-final {
+        display: block;
+        margin: 30px auto 0;
+        padding: 18px;
+        background: linear-gradient(90deg, #c8102e, #8b0000);
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        max-width: 380px;
+        transition: 0.3s;
+      }
+
+      .btn-final:hover {
+        background: #000;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .download-btn {
+        display: none;
+        margin-top: 20px;
+        padding: 15px 30px;
+        background: #28a745;
+        color: white;
+        font-family: 'Cinzel', serif;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        animation: fadeIn 1s forwards;
+        width: 100%;
+        max-width: 380px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .download-btn:hover {
+        background: #218838;
+      }
+
+      /* ==================== TELA 3 - FINAL ==================== */
+      .screen3 {
+        display: none;
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 850px;
+        background: var(--paper);
+        background-image: 
+          linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)),
+          url('https://www.transparenttextures.com/patterns/linen-paper.png');
+        padding: 80px 60px;
+        box-shadow: 0 40px 120px rgba(0, 0, 0, 0.9);
+        border: 1px solid #d4cbb3;
+        text-align: center;
+        animation: fadeIn 2s forwards;
+      }
+
+      .school-img {
+        width: 100%;
+        border: 2px solid var(--accent);
+        border-radius: 4px;
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.15);
+        margin-top: 30px;
+      }
+
+      .luck-msg {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(1.5rem, 6vw, 2.5rem);
+        color: var(--accent);
+        letter-spacing: 5px;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      }
+
+      .btn-group {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 20px 50px;
+        background: var(--accent);
+        color: #000;
+        font-family: 'Cinzel', serif;
+        font-size: 1.1rem;
+        font-weight: 900;
+        text-decoration: none;
+        letter-spacing: 2px;
+        border-radius: 2px;
+        transition: all 0.4s;
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+      }
+
+      .btn-group:hover {
+        background: #fff;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+      }
+
+      @media (max-width: 600px) {
+        .professor-img {
+          float: none;
+          display: block;
+          margin: 0 auto 20px;
+        }
+        .screen2 {
+          padding: 25px 20px;
+        }
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.6;
+        }
+        90% {
+          opacity: 0.6;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="particles" id="particles"></div>
+
+    <div class="screen1" id="screen1">
+      <div class="envelope" onclick="abrirCarta()">
+        <div class="seal">IRONCLAD<br />ACADEMY<br />2026</div>
+        <div class="title">Tokyo Metropolitan</div>
+        <div class="title" style="margin-top: -18px">Ironclad Academy</div>
+        <div class="subtitle">東京鉄壁高等育成学院</div>
+        <button class="open-btn">ABRIR A CONVOCAÇÃO</button>
+      </div>
+    </div>
+
+    <div class="screen2" id="screen2">
+      <div class="letter-border"></div>
+      
+      <div class="points-header reveal-item" id="pointsHeader">
+        <div class="points-label">SALDO INICIAL</div>
+        <div class="points-value">¥100.000</div>
+      </div>
+
+      <img
+        src="professora.jpg"
+        alt="Profª Akane Kurogane"
+        class="professor-img"
+        id="akaneImg"
+      />
+
+      <div
+        id="step1"
+        class="reveal-item"
+        style="font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 2px; color: #888"
+      >
+        TOKYO METROPOLITAN IRONCLAD ACADEMY • DOSSIÊ DE ADMISSÃO #2026-A
+      </div>
+
+      <h1 id="step2" class="reveal-item">Convocação de Elite</h1>
+
+      <p id="step3" class="reveal-item" style="font-style: italic; color: #555;">
+        Tóquio, 18 de abril de 2026.
+      </p>
+
+      <p id="step4" class="reveal-item">
+        Candidato(a),
+      </p>
+
+      <p id="step5" class="reveal-item">
+        Sua presença nesta lista não é fruto do acaso ou da sorte. Você foi monitorado(a). Seus resultados, suas inclinações e seu <strong>potencial de impacto</strong> foram pesados e medidos por nossos algoritmos de seleção.
+      </p>
+
+      <p id="step6" class="reveal-item">
+        A <em>Ironclad Academy</em> não é uma escola. É um ecossistema de alta pressão projetado para forjar os líderes que o amanhã exige. Aqui, a igualdade é uma ilusão. O mérito é a única verdade absoluta, e os seus <strong>Class Points</strong> serão o reflexo direto do seu valor para a sociedade.
+      </p>
+
+      <p id="step7" class="reveal-item">
+        Eu, <strong>Akane Kurogane</strong>, assumirei pessoalmente a lapidação de suas habilidades. Não espero esforço; espero resultados incontestáveis.
+      </p>
+
+      <div id="step8" class="reveal-item" style="background: rgba(0,0,0,0.05); padding: 20px; border-radius: 4px; margin-top: 30px;">
+        <strong style="font-family: 'Cinzel', serif; color: var(--primary);">DIRETRIZES DA INSTITUIÇÃO:</strong><br />
+        • <strong>S-System:</strong> Gestão de vida baseada em pontos meritocráticos.<br />
+        • <strong>Competição:</strong> Conflitos estratégicos entre turmas de elite.<br />
+        • <strong>Infraestrutura:</strong> Imersão via Discord e Foundry VTT.
+      </div>
+
+      <div class="signatures-container reveal-item" id="step9">
+        <div class="user-signature-wrapper">
+          <div id="userSignature"></div>
+          <div style="font-size: 0.7rem; color: #888; letter-spacing: 1px; margin-top: 5px;">ASSINATURA DO ESTUDANTE</div>
+        </div>
+        <div class="signature">
+          Akane Kurogane<br />
+          <span style="font-family: 'Cinzel', serif; font-size: 0.8rem; font-style: normal; opacity: 0.7;">Instrutora-Chefe • Turma 1-A</span>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px;">
+        <button id="downloadBtn" onclick="baixarCarta()" class="download-btn">💾 BAIXAR CONTRATO ASSINADO</button>
+        <button id="proceedBtn" onclick="prosseguirFinal()" class="btn-final" style="display: none; background: #000; margin-top: 15px;">PROSSEGUIR PARA A ACADEMIA</button>
+      </div>
+
+      <div class="response-form" id="responseForm">
+        <p style="margin-bottom: 20px; font-family: 'Cinzel', serif; font-weight: bold; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+          TERMO DE ACEITAÇÃO E REGISTRO:
+        </p>
+        <div style="display: grid; gap: 10px;">
+          <input
+            type="text"
+            id="playerName"
+            placeholder="Digite seu nome completo para assinar"
+            required
+          />
+        </div>
+        <button onclick="aceitarDesafio()" class="btn-final" id="acceptBtn">
+          ASSINAR CONTRATO
+        </button>
+      </div>
+    </div>
+
+    <div class="screen3" id="screen3">
+      <div class="letter-border"></div>
+      
+      <div
+        style="font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 3px; color: #888; margin-bottom: 40px;"
+      >
+        IRONCLAD ACADEMY • REGISTRO DE ADMISSÃO FINALIZADO
+      </div>
+
+      <h2 class="luck-msg">BEM-VINDO À ELITE.</h2>
+      
+      <p style="color: #444; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+        Seu nome agora faz parte dos registros oficiais da instituição. O seu destino foi selado e a sua jornada rumo ao topo começa agora.
+      </p>
+
+      <img 
+        src="colegio.jpg" 
+        alt="Ironclad Academy Campus" 
+        class="school-img"
+      />
+
+      <div style="margin-top: 40px;">
+        <p style="font-family: 'Cinzel', serif; font-size: 0.7rem; color: #666; letter-spacing: 2px; margin-bottom: 15px;">
+          ACESSO AO CENTRO DE COMUNICAÇÕES:
+        </p>
+        <a href="https://chat.whatsapp.com/GIu2Sf4wNpm4QRu1yQLurS?mode=gi_t" class="btn-group" target="_blank">
+          INGRESSAR NO GRUPO OFICIAL
+        </a>
+      </div>
+
+      <p style="margin-top: 50px; font-style: italic; color: #888; font-size: 0.9rem;">
+        "O mérito é a nossa única medida."
+      </p>
+    </div>
+
+    <script>
+      function createParticles() {
+        const container = document.getElementById("particles");
+        for (let i = 0; i < 40; i++) {
+          const p = document.createElement("div");
+          p.style.position = "absolute";
+          p.style.width = Math.random() * 3 + 2 + "px";
+          p.style.height = p.style.width;
+          p.style.background = "#ffd700";
+          p.style.borderRadius = "50%";
+          p.style.left = Math.random() * 100 + "%";
+          p.style.top = "100%";
+          p.style.opacity = "0";
+          p.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
+          p.style.animationDelay = Math.random() * 5 + "s";
+          container.appendChild(p);
+        }
+      }
+
+      function abrirCarta() {
+        document.getElementById("screen1").style.opacity = "0";
+        setTimeout(() => {
+          document.getElementById("screen1").style.display = "none";
+          const s2 = document.getElementById("screen2");
+          s2.style.display = "block";
+          iniciarAnimacao();
+        }, 400);
+      }
+
+      function iniciarAnimacao() {
+        setTimeout(() => {
+          document.getElementById("pointsHeader").classList.add("revealed");
+          document.getElementById("akaneImg").style.opacity = "1";
+        }, 300);
+
+        const steps = ["step1", "step2", "step3", "step4", "step5", "step6", "step7", "step8", "step9"];
+        steps.forEach((id, index) => {
+          setTimeout(() => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add("revealed");
+          }, 1000 + index * 800);
+        });
+
+        setTimeout(() => {
+          document.getElementById("responseForm").style.display = "block";
+        }, 1200 + steps.length * 800);
+      }
+
+      function aceitarDesafio() {
+        const nome = document.getElementById("playerName").value.trim();
+        if (!nome) {
+          alert("Identificação obrigatória para o registro na Academia.");
+          return;
+        }
+
+        // Esconde o formulário
+        document.getElementById("responseForm").style.display = "none";
+
+        // Preenche e anima a assinatura
+        const sig = document.getElementById("userSignature");
+        sig.textContent = nome;
+        setTimeout(() => {
+          sig.classList.add("signed");
+        }, 100);
+
+        // Mostra botões de download e prosseguir após a animação
+        setTimeout(() => {
+          document.getElementById("downloadBtn").style.display = "block";
+          document.getElementById("proceedBtn").style.display = "block";
+        }, 2000);
+      }
+
+      async function baixarCarta() {
+        const carta = document.getElementById("screen2");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const proceedBtn = document.getElementById("proceedBtn");
+
+        // Esconde botões temporariamente para o print
+        downloadBtn.style.visibility = "hidden";
+        proceedBtn.style.visibility = "hidden";
+
+        try {
+          const canvas = await html2canvas(carta, {
+            scale: 2,
+            backgroundColor: "#f4eee0",
+            useCORS: true,
+            logging: false
+          });
+
+          const image = canvas.toDataURL("image/png");
+          const link = document.createElement("a");
+          link.href = image;
+          link.download = `Contrato_Ironclad_${Date.now()}.png`;
+          link.click();
+        } catch (error) {
+          console.error("Erro ao gerar imagem:", error);
+          alert("Erro ao gerar o documento. Tente novamente.");
+        } finally {
+          downloadBtn.style.visibility = "visible";
+          proceedBtn.style.visibility = "visible";
+        }
+      }
+
+      function prosseguirFinal() {
+        const s2 = document.getElementById("screen2");
+        const s3 = document.getElementById("screen3");
+        
+        s2.style.opacity = "0";
+        setTimeout(() => {
+          s2.style.display = "none";
+          s3.style.display = "block";
+          window.scrollTo(0, 0);
+        }, 800);
+      }
+
+      window.onload = createParticles;
+    </script>
+  </body>
+</html>
