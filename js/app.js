@@ -4,41 +4,45 @@
 const Terminal = {
   output: null,
   input: null,
-  commands: ['help', 'ls', 'cat', 'roll', 'clear', 'whoami', 'enroll', 'export'],
+  commands: ['help', 'ls', 'cat', 'roll', 'clear', 'whoami', 'enroll', 'export', 'music'],
   files: ['quick-start.log', 'attributes.bin', 'skills.db', 'traits.json', 'economy.xlsm', 'protocols.pdf', 'hidden-level.enc'],
   
-  systemData: {
-    levels: ["Péssimo", "Ruim", "Medíocre", "Mediano", "Bom", "Ótimo", "Soberbo"],
-    skillCosts: [1, 0, 1, 2, 3, 4, 5], 
-    attributes: ["Intelecto", "Físico", "Carisma", "Percepção", "Controle", "Estratégia"],
-    skills: {
-      "ACADÊMICAS": ["Matemática", "Ciências Naturais", "Língua Japonesa", "Língua Estrangeira", "Humanidades", "Lógica e Dedução", "Memorização"],
-      "SOCIAIS": ["Manipulação", "Persuasão", "Liderança", "Sedução", "Mentir", "Detectar Mentiras", "Negociação", "Intimidação", "Etiqueta Escolar", "Rede de Contatos"],
-      "INFORMAÇÃO": ["Vigilância", "Investigação", "Ler Pessoas", "Encontrar Segredos", "Contrainteligência"],
-      "ESTRATÉGICAS": ["Tática de Teste Especial", "Gestão de Recursos", "Análise de Oponentes", "Formação de Alianças", "Blefe"],
-      "FÍSICAS": ["Atletismo", "Resistência", "Combate", "Furtividade", "Primeiros Socorros", "Sobrevivência", "Orientação"],
-      "OCULTAÇÃO": ["Mascarar Emoções", "Disfarce Social", "Jogar de Fraco", "Resistir à Pressão"]
-    }
-  },
-
-  session: {
-    active: false,
-    step: 'idle',
-    data: {
-      name: 'ANONYMOUS',
-      pp: 100000,
-      attrPoints: 6,
-      skillPoints: 30,
-      traitPoints: 6,
-      attributes: { "Intelecto": 0, "Físico": 0, "Carisma": 0, "Percepção": 0, "Controle": 0, "Estratégia": 0 },
-      skills: {},
-      traits: []
-    }
+  audio: {
+    element: null,
+    playing: false,
+    volume: 0.15
   },
 
   init() {
     this.output = document.getElementById('termOutput');
     this.input = document.getElementById('cmdInput');
+    this.audio.element = document.getElementById('bgMusic');
+    
+    if (this.audio.element) {
+      this.audio.element.volume = this.audio.volume;
+      
+      // Tenta tocar automaticamente
+      const startAudio = () => {
+        this.audio.element.play().then(() => {
+          this.audio.playing = true;
+          const label = document.querySelector('#music-control span');
+          if (label) label.innerText = "AMB_AUDIO: ON";
+          // Remove os listeners após o primeiro sucesso
+          window.removeEventListener('click', startAudio);
+          window.removeEventListener('keydown', startAudio);
+        }).catch(() => {
+          // Bloqueado pelo browser
+        });
+      };
+
+      // Adiciona listeners para garantir o início na primeira interação
+      window.addEventListener('click', startAudio);
+      window.addEventListener('keydown', startAudio);
+      
+      // Tentativa imediata
+      startAudio();
+    }
+
     this.print("SYSTEM_LOADED: Core engine active.");
     this.print("Type 'help' to see list of commands. Use <span class='highlight'>TAB</span> to autocomplete.");
   },
