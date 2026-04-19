@@ -328,19 +328,79 @@ const Terminal = {
   },
 
   exportDossier() {
-    if (this.session.data.name === 'ANONYMOUS') return this.print("Erro: Nenhum dossiê ativo.", "error");
-    this.print("Generating visual output...");
+    if (this.session.data.name === 'ANONYMOUS') return this.print("Erro: Nenhum registro ativo encontrado.", "error");
+
+    this.print("Gerando representação visual do Dossiê...");
+    
     const dossier = document.createElement('div');
-    dossier.style.cssText = "position:fixed; left:-9999px; width:700px; padding:40px; background:#050505; color:#00ff41; font-family:monospace; border:2px solid #008f11;";
-    dossier.innerHTML = `<div style='border:1px solid #008f11; padding:20px;'><h1 style='color:#ff003c; text-align:center;'>ANHS STUDENT DOSSIER</h1><p>NAME: ${this.session.data.name}</p><p>PP: ¥${this.session.data.pp}</p><br><p>[ ATTRIBUTES ]</p>${Object.entries(this.session.data.attributes).map(([k,v])=>`<p>${k.toUpperCase()}: ${this.getLvlName(v)}</p>`).join('')}<br><p>[ TRAITS ]</p>${this.session.data.traits.join(', ')}</div>`;
+    dossier.id = 'tempDossier';
+    dossier.style.cssText = `
+      position: fixed; left: -9999px; top: 0; width: 700px; padding: 40px;
+      background: #050505; color: #00ff41; font-family: 'Fira Code', monospace;
+      border: 2px solid #008f11;
+    `;
+
+    const getLvl = (v) => this.getLvlName(v);
+
+    dossier.innerHTML = `
+      <div style="border: 1px solid #008f11; padding: 30px;">
+        <h1 style="color:#ff003c; text-align:center; border-bottom:1px solid #008f11; padding-bottom:15px; margin-bottom:20px;">ANHS STUDENT DOSSIER</h1>
+        
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+          <div>
+            <p>NAME: ${this.session.data.name}</p>
+            <p>CLASS: 1-D (PROVISIONAL)</p>
+          </div>
+          <div style="text-align:right;">
+            <p>CREDITS: ¥${this.session.data.pp}</p>
+            <p>STATUS: ACTIVE</p>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+          <div style="border:1px solid #003b00; padding:15px;">
+            <h3 style="color:#ff003c; font-size:0.9rem; margin-bottom:10px;">[ ATTRIBUTES ]</h3>
+            ${Object.entries(this.session.data.attributes).map(([k, v]) => `
+              <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
+                <span>${k.toUpperCase()}</span>
+                <span>${getLvl(v)} (${v >= 0 ? '+'+v : v})</span>
+              </div>
+            `).join('')}
+          </div>
+          
+          <div style="border:1px solid #003b00; padding:15px;">
+            <h3 style="color:#ff003c; font-size:0.9rem; margin-bottom:10px;">[ TRAITS ]</h3>
+            <div style="font-size:0.8rem;">${this.session.data.traits.join(', ') || 'NONE'}</div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px; border:1px solid #003b00; padding:15px;">
+          <h3 style="color:#ff003c; font-size:0.9rem; margin-bottom:10px;">[ SPECIALIZED SKILLS ]</h3>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:0.75rem;">
+            ${Object.entries(this.session.data.skills).filter(([_,v]) => v > -2).map(([k, v]) => `
+              <div style="display:flex; justify-content:space-between;">
+                <span>${k}</span>
+                <span>${getLvl(v)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <p style="text-align:center; font-size:9px; opacity:0.5; margin-top:30px;">PROPERTY OF TOKYO METROPOLITAN ADVANCED NURTURING HIGH SCHOOL - S-SYSTEM ENCRYPTION ACTIVE</p>
+      </div>
+    `;
+
     document.body.appendChild(dossier);
-    html2canvas(dossier).then(canvas => {
-      const link = document.createElement('a');
-      link.download = `DOSSIER_${this.session.data.name}.png`;
-      link.href = canvas.toDataURL();
-      link.click();
-      document.body.removeChild(dossier);
-      this.print("EXPORT_SUCCESSFUL.");
-    });
+
+    if (window.html2canvas) {
+      html2canvas(dossier).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `DOSSIER_${this.session.data.name.replace(/\s/g, '_')}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+        document.body.removeChild(dossier);
+        this.print("DOSSIÊ EXPORTADO COM SUCESSO. VERIFIQUE SEUS DOWNLOADS.");
+      });
+    }
   }
 };
