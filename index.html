@@ -24,11 +24,19 @@
       </nav>
 
       <div style="margin-top: auto; font-size: 0.6rem; color: var(--term-border);">
+        <div id="music-control" style="margin-bottom: 10px; border: 1px solid var(--term-border); padding: 5px; display: flex; align-items: center; justify-content: space-between;">
+          <span>AMB_AUDIO: OFF</span>
+          <button onclick="Terminal.toggleMusic()" style="background: var(--term-border); color: var(--term-bg); border: none; padding: 2px 5px; cursor: pointer; font-family: var(--font-mono); font-size: 0.5rem;">TOGGLE</button>
+        </div>
         [CONNECTED_AS: ANONYMOUS]<br>
         [UPLINK: ACTIVE]<br>
         [NODE: ANHS_INTERNAL]
       </div>
     </aside>
+
+    <audio id="bgMusic" loop>
+      <source src="https://cdn.pixabay.com/audio/2022/03/24/audio_732a39284d.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- TERMINAL SHELL -->
     <main class="terminal">
