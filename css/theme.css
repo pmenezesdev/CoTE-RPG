@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=JetBrains+Mono:wght@200;400;800&display=swap');
+
+:root {
+  --term-green: #00ff41;
+  --term-red: #ff003c;
+  --term-bg: #050505;
+  --term-dim: #003b00;
+  --term-border: #008f11;
+  --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--term-bg);
+  color: var(--term-green);
+  font-family: var(--font-mono);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+}
+
+/* Efeito CRT Global */
+body::before {
+  content: " ";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+  background-size: 100% 2px, 2px 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.app-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  gap: 10px;
+}
+
+/* Sidebar Exploradora */
+.sidebar {
+  width: 250px;
+  border: 1px solid var(--term-border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 { font-size: 0.8rem; margin-bottom: 20px; border-bottom: 1px solid var(--term-border); }
+
+.file-link {
+  display: block;
+  font-size: 0.75rem;
+  padding: 5px 0;
+  color: var(--term-green);
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.file-link:hover { opacity: 1; background: var(--term-dim); }
+.file-link::before { content: "> "; }
+
+/* Terminal Principal */
+.terminal {
+  flex: 1;
+  border: 1px solid var(--term-border);
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 20, 0, 0.05);
+  position: relative;
+}
+
+.terminal-header {
+  padding: 5px 15px;
+  background: var(--term-border);
+  color: var(--term-bg);
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.terminal-output {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  scrollbar-width: thin;
+}
+
+.prompt-line {
+  display: flex;
+  padding: 10px 20px;
+  background: rgba(0,0,0,0.5);
+  border-top: 1px solid var(--term-border);
+}
+
+.prompt-symbol { color: var(--term-red); font-weight: bold; margin-right: 10px; }
+
+#cmdInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--term-green);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+/* Estilo de Conteúdo Hack */
+.ascii-art { font-size: 0.4rem; line-height: 1; margin-bottom: 20px; color: var(--term-red); }
+.highlight { color: #fff; background: var(--term-border); padding: 0 5px; }
+.error { color: var(--term-red); }
+
+@keyframes typing { from { width: 0 } to { width: 100% } }
+.typewriter { overflow: hidden; white-space: nowrap; animation: typing 1s steps(40, end); }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: var(--term-border); }

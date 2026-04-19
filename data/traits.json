@@ -1,0 +1,155 @@
+{
+  "blessings": {
+    "Cognitivas & Mentais": [
+      { "name": "Memória Fotográfica", "cost": 2, "description": "Retém com precisão quase tudo que lê, vê ou ouve. Sem testes para detalhes e sem penalidades de estudo em exames." },
+      { "name": "Raciocínio Veloz", "cost": 2, "description": "Processamento rápido. Sem penalidade de improvisação (-1) e age primeiro em disputas de velocidade." },
+      { "name": "Pensamento Lateral", "cost": 2, "description": "1x por sessão, o Mestre sugere uma abordagem alternativa não-óbvia para um problema." },
+      { "name": "Intuição Aguçada", "cost": 2, "description": "Recebe um aviso velado do Mestre antes de ser enganado ou cair em armadilhas." },
+      { "name": "Aprendizado Acelerado", "cost": 2, "description": "Custo de PEX reduzido em 1. Pode imitar técnicas após observar especialistas." },
+      { "name": "Foco Absoluto", "cost": 2, "description": "Recebe +1 em tarefas de longa duração e concentração (estudo, planejamento)." },
+      { "name": "Resistência Mental", "cost": 2, "description": "Mente estável. Imune ao primeiro nível de Estresse acumulado por evento externo." },
+      { "name": "Memória de Padrões", "cost": 1, "description": "Reconhece repetições em comportamentos ou estratégias. Mestre avisa discretamente." },
+      { "name": "Multitarefa", "cost": 2, "description": "Gerencia múltiplas linhas de ação sem sofrer as penalidades padrão de divisão de atenção." },
+      { "name": "Mente de Xadrez", "cost": 3, "description": "Pensa 3 jogadas à frente. Preveja ação adversária para ganhar +2 no teste correspondente." },
+      { "name": "Imunidade ao Pânico", "cost": 2, "description": "Em crises agudas, não sofre penalidade por choque ou hesitação inicial." },
+      { "name": "Lógica Infalível", "cost": 2, "description": "Em testes de Lógica com tempo, nunca rola abaixo de Mediano (conta como piso)." }
+    ],
+    "Sociais & Interpessoais": [
+      { "name": "Carisma Natural", "cost": 2, "description": "Presença magnética. Dificuldade de persuasão em primeira impressão reduzida em 1 nível." },
+      { "name": "Líder Nato", "cost": 3, "description": "Inspira o grupo. Aliados recebem +1 em testes individuais sob sua liderança." },
+      { "name": "Empatia Afinada", "cost": 2, "description": "Sente o estado emocional alheio. Pode refazer testes de Ler Pessoas falhos." },
+      { "name": "Presença Intimidante", "cost": 2, "description": "Faz as pessoas recuarem. Recebe +1 em testes de Intimidação." },
+      { "name": "Voz Calmante", "cost": 1, "description": "Reduz tensão em conflitos verbais. Sucesso em SOC evita escalada do conflito." },
+      { "name": "Confiabilidade Percebida", "cost": 2, "description": "Pessoas tendem a acreditar em você. Recebe +1 em Persuasão se estiver dizendo a verdade." },
+      { "name": "Rede de Favores", "cost": 3, "description": "Uma vez por arco, pode chamar um favor relevante de um NPC sem custo em Pontos Privados." },
+      { "name": "Leitura de Microexpressões", "cost": 3, "description": "Detecta sinais físicos sutis. Recebe +2 em Detectar Mentiras." },
+      { "name": "Espelho Social", "cost": 2, "description": "Adapta-se naturalmente a qualquer grupo social. Dificuldade de integração reduzida em 1." },
+      { "name": "Conector", "cost": 2, "description": "Pode criar dinâmicas estratégicas apresentando NPCs e PCs de forma influente." },
+      { "name": "Diplomata Natural", "cost": 2, "description": "Dificuldade de negociação reduzida em 1 se não houver hostilidade ativa." },
+      { "name": "Autoridade Implícita", "cost": 2, "description": "Exala competência. Dificuldade de Liderança em emergências reduzida em 1 nível." },
+      { "name": "Reputação de Ameaça", "cost": 2, "description": "Invoque sua fama para dissuadir ações adversárias sem a necessidade de testes." },
+      { "name": "Alvo da Lealdade", "cost": 3, "description": "Possui um aliado (NPC ou PC) genuinamente leal a ponto de sacrifícios pessoais." }
+    ],
+    "Ocultação & Dissimulação": [
+      { "name": "Carta na Manga", "cost": 3, "description": "Possui Nível Oculto em um atributo (até 2 níveis acima do aparente)." },
+      { "name": "Carta na Manga Dupla", "cost": 4, "description": "Possui Níveis Ocultos em dois atributos distintos (requer backstory)." },
+      { "name": "Máscara Perfeita", "cost": 3, "description": "Mantém persona pública completamente distinta da real (Atributos Aparentes)." },
+      { "name": "Rosto Inexpressivo", "cost": 2, "description": "Rosto não revela nada. Testes para ler suas emoções sofrem -2 de penalidade." },
+      { "name": "Mentiroso Convincente", "cost": 3, "description": "Lógica e fisiologia de mentira indetectáveis. Detectar Mentiras contra você sofre -2." },
+      { "name": "Jogar de Fraco", "cost": 2, "description": "Performance deliberada de nível inferior para enganar adversários." },
+      { "name": "Presença Invisível", "cost": 2, "description": "Qualidade não-marcante. Recebe +2 em Furtividade Social (não ser notado)." },
+      { "name": "Voz Sem Traição", "cost": 2, "description": "Voz imutável sob pressão. Imune a detecção por hesitação ou tremor vocal." }
+    ],
+    "Físicas & Atléticas": [
+      { "name": "Atleta de Elite", "cost": 2, "description": "Recebe +1 em todos os testes físicos e performance esportiva de topo." },
+      { "name": "Força Excepcional", "cost": 2, "description": "Recebe +2 em testes de Físico que envolvam força bruta ou carga." },
+      { "name": "Velocidade Superior", "cost": 2, "description": "Recebe +2 em reações rápidas e age antes de outros no turno físico." },
+      { "name": "Resistência Sobre-humana", "cost": 3, "description": "Não sofre penalidade de exaustão até atingir o terceiro nível de cansaço." },
+      { "name": "Reflexos Militares", "cost": 3, "description": "Reflexos treinados. Age antes de qualquer teste ser exigido para ações básicas de reação." },
+      { "name": "Recuperação Rápida", "cost": 2, "description": "Corpo recupera-se em metade do tempo e resiste a eventos físicos consecutivos." },
+      { "name": "Tolerância à Dor", "cost": 2, "description": "Ignora o primeiro nível de estresse físico (Arranhão) sem penalidades." },
+      { "name": "Sobrevivente Instintivo", "cost": 3, "description": "Dificuldades de sobrevivência reduzidas em 1. Identifica recursos básicos sem testes." },
+      { "name": "Sem Necessidade de Sono", "cost": 2, "description": "Funciona até 48 horas sem sono ou descanso sem degradação de performance." },
+      { "name": "Agilidade de Acrobata", "cost": 2, "description": "Coordenação excepcional. Recebe +2 em equilíbrio e manobras complexas." }
+    ],
+    "Acadêmicas & Intelectuais": [
+      { "name": "Especialista Acadêmico", "cost": 2, "description": "Escolha uma matéria para funcionar com Intelecto +1 nível acima do real." },
+      { "name": "Velocidade de Leitura", "cost": 1, "description": "Lê três vezes mais rápido. Processa documentos completos em frações do tempo." },
+      { "name": "Compreensão Intuitiva", "cost": 2, "description": "Usa Intelecto puro em matérias não-treinadas sem a penalidade de ignorância." },
+      { "name": "Calma em Provas", "cost": 2, "description": "Imune a ansiedade ou pressão em exames formais, mantendo performance total." },
+      { "name": "Abrangência Acadêmica", "cost": 3, "description": "Piso de performance Medíocre em todas as matérias acadêmicas mesmo sem treino." },
+      { "name": "Análise Crítica", "cost": 2, "description": "Identifica falácias. Manobra 'Analisar' em combate social não gasta turno." },
+      { "name": "Aprendiz Universal", "cost": 2, "description": "Aprende novas perícias em campo (nível Mediano) apenas por observação rápida." }
+    ],
+    "Estratégicas & Táticas": [
+      { "name": "Antevisão Tática", "cost": 3, "description": "1x por Teste Especial, pode prever uma consequência de segundo grau de uma ação." },
+      { "name": "Contador de Recursos", "cost": 2, "description": "Monitoramento automático de pontos e tempo. Estimativas de recursos inimigos via EST." },
+      { "name": "Explorador de Fraquezas", "cost": 3, "description": "Identifica 1 Fraqueza mecânica ou narrativa do alvo após observá-lo por uma cena." },
+      { "name": "Planejador Meticuloso", "cost": 2, "description": "Planos bem preparados concedem +1 para todos os membros envolvidos na execução." },
+      { "name": "Improvisador Nato", "cost": 2, "description": "Sem penalidades por improvisação. Sucessos encontram saídas melhores que o plano." },
+      { "name": "Negociador Mestre", "cost": 3, "description": "Propostas irresistíveis. Nunca sai de uma negociação com as mãos vazias." },
+      { "name": "Blefador Profissional", "cost": 3, "description": "Recebe +2 em testes de Blefe. Sustenta mentiras por múltiplas sessões." },
+      { "name": "Alocador de Recursos", "cost": 2, "description": "Investimentos mensais eficientes em PdC ou PP garantidos pelo Mestre." },
+      { "name": "Jogador de Longo Prazo", "cost": 3, "description": "Pode perder testes intencionalmente sem ganhar estresse para favorecer planos futuros." },
+      { "name": "Arquiteto de Alianças", "cost": 3, "description": "Alianças duram o dobro do tempo. Recebe aviso antecipado sobre traições." }
+    ],
+    "Especiais & Únicas": [
+      { "name": "Riqueza", "cost": 2, "description": "Acesso a recursos financeiros: Pontos Privados iniciais dobrados, triplicados ou conexões externas." },
+      { "name": "Conexão Externa", "cost": 3, "description": "Acesso a informações ou recursos de fora do campus (família, governo) 1x por arco." },
+      { "name": "Informante", "cost": 3, "description": "Possui fonte oculta (professor/aluno) que fornece segredos 1x por sessão." },
+      { "name": "Reputação de Imprevisível", "cost": 2, "description": "Movimentos difíceis de modelar. 'Analisar' contra você revela apenas metade da informação." },
+      { "name": "Intuicão de Perigo", "cost": 3, "description": "Sexto sentido. Aviso velado do Mestre antes da ativação de qualquer armadilha preparada." },
+      { "name": "Adaptabilidade", "cost": 3, "description": "Ajuste imediato a novas regras de Testes Especiais sem penalidade de inexperiência." },
+      { "name": "Autodidatismo", "cost": 2, "description": "Estudo individual tão eficiente quanto tutoria. Custo de PEX reduzido em 1." },
+      { "name": "Frieza Cirúrgica", "cost": 3, "description": "Recebe +1 em todos os testes enquanto o grupo estiver sob crise aguda ou pânico." },
+      { "name": "Invisível no Radar", "cost": 3, "description": "Age livremente em Testes Especiais sem ser identificado como ameaça nas primeiras rodadas." },
+      { "name": "Marca de Respeito", "cost": 3, "description": "Invoque o respeito de adversários para interromper hostilidades e negociar 1x por arco." },
+      { "name": "Resistência à Corrupção", "cost": 2, "description": "Dificuldade para suborno, ameaça e manipulação contra você aumentada em 2 níveis." },
+      { "name": "Parceria Sincronizada", "cost": 3, "description": "Trabalho em dupla (PC) concede +2 em testes e manobras combinadas em combate social." }
+    ]
+  },
+  "flaws": {
+    "Psicológicas & Emocionais": [
+      { "name": "Orgulho Excessivo", "gain": 2, "description": "Deve testar CTR (Dificuldade Bom) ou aceitar qualquer desafio público de competência." },
+      { "name": "Perfeccionismo Paralisante", "gain": 2, "description": "Sofre -1 em improvisações. Falhas em testes 'garantidos' geram +1 Estresse." },
+      { "name": "Impulsividade", "gain": 2, "description": "Age sem pensar se provocado. Teste de CTR (Dificuldade Mediana) para evitar." },
+      { "name": "Paranoia", "gain": 2, "description": "Desconfiança visível de aliados. Dificuldade de Alianças aumentada em 1 nível." },
+      { "name": "Obsessão", "gain": 2, "description": "Prioriza iracionalmente um objetivo, pessoa ou princípio em detrimento da estratégia." },
+      { "name": "Dependência de Aprovação", "gain": 2, "description": "Elogios dão +1, mas críticas públicas de figuras respeitadas geram -1 no próximo teste." },
+      { "name": "Raiva Reprimida", "gain": 3, "description": "Explosão emocional inoportuna se o estresse for alto (requer teste de CTR Ótimo)." },
+      { "name": "Medo de Fracasso", "gain": 2, "description": "Sofre -1 em testes de alto perfil/públicos por pressão. Evita admitir ignorância." },
+      { "name": "Pensamento Rígido", "gain": 2, "description": "Dificuldade em mudar planos. Sofre -2 no primeiro turno de improvisação pós-falha." },
+      { "name": "Indecisão Crônica", "gain": 2, "description": "Prazo narrativo para escolhas de alto impacto ou perde-se a oportunidade." },
+      { "name": "Culpa Persistente", "gain": 2, "description": "Acumula +1 Estresse automático quando ações prejudicam aliados ou exigem sacrifícios." },
+      { "name": "Ciúme Tático", "gain": 2, "description": "Age competitivamente de forma contraproducente se aliados receberem mais crédito." }
+    ],
+    "Sociais & Relacionamentos": [
+      { "name": "Arrogância Perceptível", "gain": 2, "description": "NPCs neutros reagem negativamente. Dificuldade de primeira impressão aumentada em 1." },
+      { "name": "Incapaz de Trabalhar em Equipe", "gain": 3, "description": "Sofre -2 em todos os testes coletivos colaborativos. Dificuldade em delegar." },
+      { "name": "Fama Suspeita", "gain": 2, "description": "Ceticismo inicial de NPCs. Dificuldade de Negociação aumentada em 1 nível." },
+      { "name": "Boca sem Freio", "gain": 2, "description": "Revela informações desnecessárias sob tensão (requer teste de CTR para calar)." },
+      { "name": "Solitário Crônico", "gain": 2, "description": "Sofre -2 em coordenação com o grupo, mas ganha +1 em ações individuais discretas." },
+      { "name": "Dificuldade de Confiar", "gain": 2, "description": "Alianças exigem 2 sessões prévias de interação. Falha em ceder o benefício da dúvida." },
+      { "name": "Conflituoso", "gain": 2, "description": "Cria tensão desnecessária em interações neutras 1x por sessão (complicação narrativa)." },
+      { "name": "Ingênuo Social", "gain": 2, "description": "Lê mal pessoas. Sofre -2 em Detectar Mentiras e Ler Pessoas." },
+      { "name": "Dívida de Honra", "gain": 3, "description": "Possui credor que pode solicitar serviços incondicionais a qualquer momento." },
+      { "name": "Inimigo Declarado", "gain": 3, "description": "Um adversário ativo age deliberadamente contra você regularmente." },
+      { "name": "Popularidade Reversa", "gain": 2, "description": "Má fama. Sofre -1 em Alianças com grupos que se preocupem com imagem pública." },
+      { "name": "Lealdade Cega", "gain": 3, "description": "Incapaz de agir contra alvo específico. Requer teste de CTR Soberbo para trair." }
+    ],
+    "Segredos & Situacionais": [
+      { "name": "Segredo Perigoso", "gain": 3, "description": "Informação que, se revelada, arruinaria sua posição ou relações acadêmicas." },
+      { "name": "Segredo Moderado", "gain": 2, "description": "Informação embaraçosa ou erro passado que causa perda de aliados específicos." },
+      { "name": "Dívida de Pontos", "gain": 2, "description": "Começa com metade dos Pontos Privados. Possui credor com agenda própria." },
+      { "name": "Situação Familiar Problemática", "gain": 3, "description": "Pressão familiar ou parentes no campus criam complicações narrativas constantes." },
+      { "name": "Monitorado", "gain": 3, "description": "Suas ações são observadas e relatadas a uma entidade (professor/turma rival)." },
+      { "name": "Alvo de Análise", "gain": 3, "description": "Um adversário possui dossiê sobre seus padrões e fraquezas, usando-o ativamente." },
+      { "name": "Contrato de Lealdade Forçada", "gain": 3, "description": "Vinculado a agir conforme acordo com grupo ou entidade externa sob pena grave." },
+      { "name": "Cronômetro", "gain": 3, "description": "Prazo inevitável para alcançar objetivo, criando pressão narrativa crescente." }
+    ],
+    "Acadêmicas & Cognitivas": [
+      { "name": "Matéria Fraca", "gain": 1, "description": "Escolha uma matéria para funcionar com Intelecto -1 nível abaixo do real." },
+      { "name": "Buraco Negro Acadêmico", "gain": 2, "description": "Teto de performance Medíocre em uma matéria específica, independente do estudo." },
+      { "name": "Ansiedade em Provas", "gain": 2, "description": "Sofre -1 em exames formais decisivos (não ocorre em simulados)." },
+      { "name": "Lentidão de Processamento", "gain": 2, "description": "Sofre -1 em situações de resposta rápida ou blitz de informação." },
+      { "name": "Conhecimento em Silos", "gain": 2, "description": "Sofre -1 em testes de pensamento interdisciplinar ou lógica em novos contextos." },
+      { "name": "Bloqueio Criativo", "gain": 1, "description": "Trava em situações de respostas abertas ou abordagens não-convencionais." }
+    ],
+    "Físicas": [
+      { "name": "Resistência Baixa", "gain": 2, "description": "Corpo esgota rápido. Sofre penalidades de exaustão 1 etapa antes do normal." },
+      { "name": "Problema de Saúde Recorrente", "gain": 3, "description": "Condição médica que gera penalidades físicas periódicas (-1 a -2)." },
+      { "name": "Descoordenação Seletiva", "gain": 1, "description": "Sofre -2 em uma categoria específica de atividade física (ex: natação)." },
+      { "name": "Fragilidade Aparente", "gain": 2, "description": "Visto como alvo fácil por NPCs agressivos devido ao porte ou histórico." }
+    ],
+    "De Caráter": [
+      { "name": "Honestidade Compulsiva", "gain": 3, "description": "Dificuldade psicológica em mentir. Requer teste de CTR para manter farsas." },
+      { "name": "Avareza", "gain": 2, "description": "Dificuldade em gastar Pontos Privados mesmo estrategicamente necessário." },
+      { "name": "Vingativo", "gain": 3, "description": "Necessidade de revancha conflita com interesse estratégico imediato." },
+      { "name": "Covarde Situacional", "gain": 3, "description": "Tendência a recuar em risco real. Exige teste de CTR Bom para agir." },
+      { "name": "Mentira Compulsiva", "gain": 3, "description": "Mente por hábito mesmo quando a verdade seria mais eficiente. Perda de confiança." },
+      { "name": "Apostador", "gain": 3, "description": "Atração por alto risco. Requer teste de CTR Bom para evitar apostas tentadoras." },
+      { "name": "Altruísta Inconveniente", "gain": 2, "description": "Dificuldade em usar pessoas como peões. Acumula estresse ao executar planos frios." },
+      { "name": "Principista Inflexível", "gain": 3, "description": "Código moral rígido que limita as estratégias disponíveis e é explorável." }
+    ]
+  }
+}
