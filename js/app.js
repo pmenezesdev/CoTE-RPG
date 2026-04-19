@@ -13,31 +13,39 @@ const Terminal = {
     volume: 0.15
   },
 
+  boot() {
+    const bootScreen = document.getElementById('boot-screen');
+    const appContainer = document.getElementById('app');
+    const music = document.getElementById('bgMusic');
+
+    // Inicia música (interação garantida pelo clique no botão boot)
+    if (music) {
+      music.volume = this.audio.volume;
+      music.play().then(() => {
+        this.audio.playing = true;
+        this.updateAudioUI(true);
+      }).catch(e => console.error("Audio stream failed."));
+    }
+
+    // Sequência visual de boot
+    bootScreen.style.opacity = '0';
+    setTimeout(() => {
+      bootScreen.style.display = 'none';
+      appContainer.classList.add('loaded');
+      this.init();
+      this.input.focus();
+      
+      // Simulação de scanning
+      this.print("DECRYPTING_SYSTEM_FILES...");
+      setTimeout(() => this.print("BYPASSING_ANHS_FIREWALL... OK."), 500);
+      setTimeout(() => this.print("ACCESS_GRANTED: Welcome Student."), 1000);
+    }, 1000);
+  },
+
   init() {
     this.output = document.getElementById('termOutput');
     this.input = document.getElementById('cmdInput');
     this.audio.element = document.getElementById('bgMusic');
-    
-    if (this.audio.element) {
-      this.audio.element.volume = this.audio.volume;
-      
-      const startAudio = () => {
-        this.audio.element.play().then(() => {
-          this.audio.playing = true;
-          const label = document.querySelector('#music-control span');
-          if (label) label.innerText = "AMB_AUDIO: ON";
-          window.removeEventListener('click', startAudio);
-          window.removeEventListener('keydown', startAudio);
-        }).catch(() => {
-          // Autoplay ainda bloqueado pelo browser
-        });
-      };
-
-      window.addEventListener('click', startAudio);
-      window.addEventListener('keydown', startAudio);
-      
-      startAudio();
-    }
 
     this.print("SYSTEM_LOADED: Core engine active.");
     this.print("Type 'help' to see list of commands. Use <span class='highlight'>TAB</span> to autocomplete.");

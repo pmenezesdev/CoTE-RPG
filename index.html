@@ -9,7 +9,16 @@
 </head>
 <body>
 
-  <div class="app-container">
+  <!-- BOOT SCREEN -->
+  <div id="boot-screen">
+    <div class="boot-logo">ANHS_SYSTEM_UPLINK</div>
+    <div style="font-size: 0.6rem; color: #444; margin-bottom: 30px; font-family: monospace;">
+      WAITING FOR IDENTIFICATION... [REDACTED]
+    </div>
+    <button class="boot-btn" onclick="Terminal.boot()">INITIALIZE_SHELL</button>
+  </div>
+
+  <div class="app-container" id="app">
     <!-- FILE EXPLORER SIDEBAR -->
     <aside class="sidebar">
       <h2>S-SYSTEM FS</h2>
@@ -34,7 +43,7 @@
       </div>
     </aside>
 
-    <audio id="bgMusic" loop autoplay>
+    <audio id="bgMusic" loop>
       <source src="assets/Stealth%20Music.mp3" type="audio/mpeg">
     </audio>
 
@@ -59,47 +68,37 @@
 
       <div class="prompt-line">
         <span class="prompt-symbol">ANHS@TERMINAL:~$</span>
-        <input type="text" id="cmdInput" autocomplete="off" autofocus>
+        <input type="text" id="cmdInput" autocomplete="off">
       </div>
     </main>
   </div>
 
-  <!-- Ordem Crítica de Scripts -->
   <script src="js/app.js"></script>
   <script src="js/navigation.js"></script>
   <script src="js/tools.js"></script>
   <script>
-    // Gerenciador de Entrada do Terminal
     const input = document.getElementById('cmdInput');
-    const terminal = document.querySelector('.terminal');
     
-    // Autofocus contínuo: clica em qualquer lugar do terminal para focar
     document.addEventListener('click', function(e) {
-      // Se não estiver selecionando texto, foca no input
       if (window.getSelection().toString() === "") {
         input.focus();
       }
     });
 
     input.addEventListener('keydown', function(e) {
-      // ENTER para executar comando
       if(e.key === 'Enter') {
         const val = this.value;
         this.value = '';
         Terminal.execute(val);
       }
-      
-      // TAB para autocomplete
       if(e.key === 'Tab') {
         e.preventDefault();
         Terminal.autocomplete();
       }
     });
 
-    // Foco inicial
     window.onload = () => {
-      Terminal.init();
-      input.focus();
+      // O Init real agora acontece no Terminal.boot()
     };
   </script>
 </body>
