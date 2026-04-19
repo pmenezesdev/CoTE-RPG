@@ -9,104 +9,96 @@ const Terminal = {
   
   audio: {
     element: null,
-    playing: true,
+    playing: false,
     volume: 0.15
+  },
+
+  session: {
+    active: false,
+    step: 'idle',
+    data: {
+      name: 'ANONYMOUS',
+      pp: 100000,
+      attrPoints: 6,
+      skillPoints: 30,
+      traitPoints: 6,
+      attributes: { "Intelecto": 0, "Físico": 0, "Carisma": 0, "Percepção": 0, "Controle": 0, "Estratégia": 0 },
+      skills: {},
+      traits: []
+    }
+  },
+
+  systemData: {
+    levels: ["Péssimo", "Ruim", "Medíocre", "Mediano", "Bom", "Ótimo", "Soberbo"],
+    skillCosts: [1, 0, 1, 2, 3, 4, 5], 
+    attributes: ["Intelecto", "Físico", "Carisma", "Percepção", "Controle", "Estratégia"],
+    skills: {
+      "ACADÊMICAS": ["Matemática", "Ciências Naturais", "Língua Japonesa", "Língua Estrangeira", "Humanidades", "Lógica e Dedução", "Memorização"],
+      "SOCIAIS": ["Manipulação", "Persuasão", "Liderança", "Sedução", "Mentir", "Detectar Mentiras", "Negociação", "Intimidação", "Etiqueta Escolar", "Rede de Contatos"],
+      "INFORMAÇÃO": ["Vigilância", "Investigação", "Ler Pessoas", "Encontrar Segredos", "Contrainteligência"],
+      "ESTRATÉGICAS": ["Tática de Teste Especial", "Gestão de Recursos", "Análise de Oponentes", "Formação de Alianças", "Blefe"],
+      "FÍSICAS": ["Atletismo", "Resistência", "Combate", "Furtividade", "Primeiros Socorros", "Sobrevivência", "Orientação"],
+      "OCULTAÇÃO": ["Mascarar Emoções", "Disfarce Social", "Jogar de Fraco", "Resistir à Pressão"]
+    }
   },
 
   boot() {
     const bootScreen = document.getElementById('boot-screen');
     const appContainer = document.getElementById('app');
-    const music = document.getElementById('bgMusic');
+    this.audio.element = document.getElementById('bgMusic');
 
-    // Inicia música (interação garantida pelo clique no botão boot)
-    if (music) {
-      music.volume = this.audio.volume;
-      music.play().then(() => {
+    // Inicializa interface antes da revelação
+    this.output = document.getElementById('termOutput');
+    this.input = document.getElementById('cmdInput');
+
+    // Inicia música (interação garantida pelo clique)
+    if (this.audio.element) {
+      this.audio.element.volume = this.audio.volume;
+      this.audio.element.play().then(() => {
         this.audio.playing = true;
         this.updateAudioUI(true);
-      }).catch(e => console.error("Audio stream failed."));
+      }).catch(e => console.warn("Autoplay blocked or failed."));
     }
 
-    // Sequência visual de boot
     bootScreen.style.opacity = '0';
     setTimeout(() => {
       bootScreen.style.display = 'none';
       appContainer.classList.add('loaded');
-      this.init();
-      this.input.focus();
       
-      // Simulação de scanning
-      this.print("DECRYPTING_SYSTEM_FILES...");
-      setTimeout(() => this.print("BYPASSING_ANHS_FIREWALL... OK."), 500);
-      setTimeout(() => this.print("ACCESS_GRANTED: Welcome Student."), 1000);
+      this.print("INITIALIZING ANHS_CORE_OS...");
+      setTimeout(() => this.print("LOADING_RULES_DATABASE... OK."), 400);
+      setTimeout(() => this.print("ESTABLISHING_ENCRYPTED_UPLINK... OK."), 800);
+      setTimeout(() => {
+        this.print("<br>Welcome to the Advanced Nurturing High School Intelligence Network.");
+        this.print("Type 'help' to see list of commands. Use <span class='highlight'>TAB</span> to autocomplete.");
+        if (this.input) this.input.focus();
+      }, 1200);
     }, 1000);
   },
 
-  init() {
-    this.output = document.getElementById('termOutput');
-    this.input = document.getElementById('cmdInput');
-    this.audio.element = document.getElementById('bgMusic');
-
-    this.print("SYSTEM_LOADED: Core engine active.");
-    this.print("Type 'help' to see list of commands. Use <span class='highlight'>TAB</span> to autocomplete.");
+  updateAudioUI(active) {
+    const label = document.querySelector('#music-control span');
+    if (label) label.innerText = active ? "AMB_AUDIO: ON" : "AMB_AUDIO: OFF";
   },
 
-  autocomplete() {
-    const val = this.input.value.toLowerCase();
-    if (!val) return;
-
-    const parts = val.split(' ');
-    const cmd = parts[0];
-    const query = parts.slice(1).join(' ');
-
-    // 1. Sugestões de Comandos Base (sempre disponível)
-    if (parts.length === 1) {
-      const allCmds = [...this.commands, 'next', 'finish', 'list'];
-      const matches = allCmds.filter(c => c.startsWith(val));
-      if (matches.length === 1) {
-        this.input.value = matches[0] + ' ';
-      } else if (matches.length > 1) {
-        this.print(`Sugestões: ${matches.join(', ')}`, 'system');
-      }
-      return;
-    }
-
-    // 2. Autocomplete de Arquivos (cat)
-    if (cmd === 'cat' && parts.length === 2) {
-      const matches = this.files.filter(f => f.startsWith(parts[1]));
-      if (matches.length === 1) {
-        this.input.value = `cat ${matches[0]}`;
-      } else if (matches.length > 1) {
-        this.print(`Arquivos: ${matches.join(', ')}`, 'system');
-      }
-      return;
-    }
-
-    // 3. Autocomplete de Atributos (set)
-    if (this.session.active && this.session.step === 'allocating_attributes' && cmd === 'set') {
-      const matches = this.systemData.attributes.filter(a => a.toLowerCase().startsWith(query));
-      if (matches.length === 1) {
-        this.input.value = `set ${matches[0]} `;
-      } else if (matches.length > 1) {
-        this.print(`Atributos: ${matches.join(', ')}`, 'system');
-      }
-      return;
-    }
-
-    // 4. Autocomplete de Perícias (buy)
-    if (this.session.active && this.session.step === 'allocating_skills' && cmd === 'buy') {
-      const allSkills = Object.values(this.systemData.skills).flat();
-      const matches = allSkills.filter(s => s.toLowerCase().startsWith(query));
-      if (matches.length === 1) {
-        this.input.value = `buy ${matches[0]} `;
-      } else if (matches.length > 1) {
-        this.print(`Perícias: ${matches.join(', ')}`, 'system');
-      }
-      return;
+  toggleMusic() {
+    if (!this.audio.element) return;
+    if (this.audio.playing) {
+      this.audio.element.pause();
+      this.audio.playing = false;
+      this.updateAudioUI(false);
+      this.print("AMBIENT_AUDIO: Terminated.");
+    } else {
+      this.audio.element.play().then(() => {
+        this.audio.playing = true;
+        this.updateAudioUI(true);
+        this.print("AMBIENT_AUDIO: Restored.");
+      });
     }
   },
 
   print(text, type = '') {
+    if (!this.output) return;
     const div = document.createElement('div');
     div.className = `log-line ${type}`;
     div.innerHTML = text;
@@ -135,46 +127,55 @@ const Terminal = {
         this.print("  ls          - List virtual files");
         this.print("  cat [file]  - Read file");
         this.print("  enroll      - Start registration");
-        this.print("  export      - Save character dossier as image");
+        this.print("  export      - Save dossier as image");
         this.print("  roll        - Roll 4dF");
-        this.print("  clear       - Clear terminal");
-        this.print("  whoami      - Display user info");
+        this.print("  music       - Toggle ambiance");
+        this.print("  clear       - Clear screen");
         break;
-
-      case 'enroll':
-        this.startEnrollment(args.includes('--elite'));
-        break;
-
-      case 'export':
-        this.exportDossier();
-        break;
-
-      case 'ls':
-        this.print("Directory: /S-SYSTEM/RULES");
-        this.print("  quick-start.log  attributes.bin  skills.db");
-        this.print("  traits.json      economy.xlsm    protocols.pdf");
-        break;
-
-      case 'roll':
-        this.rollDice();
-        break;
-
+      case 'enroll': this.startEnrollment(args.includes('--elite')); break;
+      case 'export': this.exportDossier(); break;
+      case 'ls': this.print("Files: quick-start.log, attributes.bin, skills.db, traits.json, economy.xlsm, protocols.pdf"); break;
+      case 'roll': this.rollDice(); break;
+      case 'music': this.toggleMusic(); break;
+      case 'clear': this.output.innerHTML = ''; break;
       case 'cat':
         if(!args[1]) this.print("Error: No file specified.", "error");
         else this.readFile(args[1]);
         break;
+      default: this.print(`Command not found: ${command}`, "error");
+    }
+  },
 
-      case 'whoami':
-        this.print(`USER_ID: ${this.session.data.name}`);
-        this.print("CLASS: 1-D (PROVISIONAL) | STATUS: " + (this.session.data.name === 'ANONYMOUS' ? 'GUEST' : 'ACTIVE'));
-        break;
+  autocomplete() {
+    const val = this.input.value.toLowerCase();
+    if (!val) return;
+    const parts = val.split(' ');
+    const cmd = parts[0];
+    const query = parts.slice(1).join(' ');
 
-      case 'clear':
-        this.output.innerHTML = '';
-        break;
+    if (parts.length === 1) {
+      const all = [...this.commands, 'next', 'finish', 'list'];
+      const matches = all.filter(c => c.startsWith(val));
+      if (matches.length === 1) this.input.value = matches[0] + ' ';
+      return;
+    }
 
-      default:
-        this.print(`Command not found: ${command}`, "error");
+    if (cmd === 'cat' && parts.length === 2) {
+      const matches = this.files.filter(f => f.startsWith(parts[1]));
+      if (matches.length === 1) this.input.value = `cat ${matches[0]}`;
+      return;
+    }
+
+    if (this.session.active) {
+      if (this.session.step === 'allocating_attributes' && cmd === 'set') {
+        const matches = this.systemData.attributes.filter(a => a.toLowerCase().startsWith(query));
+        if (matches.length === 1) this.input.value = `set ${matches[0]} `;
+      }
+      if (this.session.step === 'allocating_skills' && cmd === 'buy') {
+        const allSkills = Object.values(this.systemData.skills).flat();
+        const matches = allSkills.filter(s => s.toLowerCase().startsWith(query));
+        if (matches.length === 1) this.input.value = `buy ${matches[0]} `;
+      }
     }
   },
 
@@ -186,67 +187,47 @@ const Terminal = {
     this.session.data.attributes = { "Intelecto": 0, "Físico": 0, "Carisma": 0, "Percepção": 0, "Controle": 0, "Estratégia": 0 };
     this.session.data.skillPoints = 30;
     this.session.data.traitPoints = 6;
-    
     if (isElite) {
       this.session.data.pp = 120000;
-      this.print("[SYSTEM] Parâmetro --elite detectado. Reconhecendo potencial estratégico.");
-      this.print("[SYSTEM] Créditos iniciais: <span class='highlight'>¥120.000 PP</span>.");
+      this.print("[SYSTEM] Mode: ELITE_ENROLLMENT. Initial PP: ¥120.000.");
     } else {
       this.session.data.pp = 100000;
     }
-
-    this.print("<br>Iniciando registro de estudante. Por favor, identifique-se.");
-    this.print("Digite seu <span class='highlight'>NOME COMPLETO</span>:");
+    this.print("<br>IDENTIFICATION REQUIRED. Type your FULL NAME:");
   },
 
   handleSession(input, originalCase) {
     const step = this.session.step;
-
     if (step === 'awaiting_name') {
       this.session.data.name = originalCase.toUpperCase();
-      this.print(`[OK] Identidade confirmada: ${this.session.data.name}`);
+      this.print(`[OK] ID: ${this.session.data.name}`);
       this.session.step = 'awaiting_standard_confirm';
-      this.print("<br>PASSO 1: CONFIGURAÇÃO DE ATRIBUTOS");
-      this.print("O sistema gerou um perfil padrão equilibrado (Nível 1 em tudo).");
-      this.print("<span class='highlight'>Deseja aceitar o Perfil Padrão? [Y/n]</span>");
+      this.print("<br>PASSO 1: ATRIBUTOS. Aceitar perfil padrão (Nível 1 em tudo)? [Y/n]");
     }
-
     else if (step === 'awaiting_standard_confirm') {
       if (input === 'y' || input === 'yes') {
         Object.keys(this.session.data.attributes).forEach(k => this.session.data.attributes[k] = 1);
-        this.print("[SYSTEM] Perfil aceito.");
         this.goToSkills();
-      } else if (input === 'n' || input === 'no') {
-        this.print("<span class='error'>[ALERTA] Desobediência detectada. Pensamento independente recompensado.</span>");
-        this.print("[BÔNUS] Traço desbloqueado: <span class='highlight'>Carta na Manga</span>");
+      } else {
+        this.print("<span class='error'>[ALERTA] Desobediência detectada. Bônus: 'Carta na Manga'.</span>");
         this.session.data.traits.push("Carta na Manga");
         this.session.step = 'allocating_attributes';
-        this.print("<br>Distribua 6 pontos. Use: <span class='highlight'>set [atributo] [valor]</span>");
-        this.print("Atributos: Intelecto, Físico, Carisma, Percepção, Controle, Estratégia");
-        this.print("Exemplo: set Intelecto 2. Digite <span class='highlight'>next</span> para continuar.");
+        this.print("<br>Distribua 6 pontos. Ex: 'set Intelecto 2'. Digite 'next' para continuar.");
       }
-    } 
-    
+    }
     else if (step === 'allocating_attributes') {
-      if (input === 'next') {
-        this.goToSkills();
-        return;
-      }
-
+      if (input === 'next') { this.goToSkills(); return; }
       const args = input.split(' ');
       if (args[0] === 'set' && args.length === 3) {
         const attrKey = Object.keys(this.session.data.attributes).find(k => k.toLowerCase() === args[1]);
         const val = parseInt(args[2]);
-        if (!attrKey || isNaN(val)) return this.print("Erro: Comando inválido. Use 'set [atributo] [valor]'.", "error");
-
+        if (!attrKey || isNaN(val)) return this.print("Erro: 'set [Atributo] [Valor]'.", "error");
         const currentTotal = Object.values(this.session.data.attributes).reduce((a, b) => a + b, 0);
         const diff = val - this.session.data.attributes[attrKey];
-        
         if (currentTotal + diff > 6) {
-          this.pendingData = { type: 'attr', attr: attrKey, val: val, diff: diff };
+          this.pendingData = { attr: attrKey, val: val };
           this.session.step = 'buy_points_confirm';
-          this.print(`<br><span class='error'>[AVISO] Limite de 6 pontos excedido.</span>`);
-          this.print(`Deseja cobrir o déficit utilizando Pontos Privados? (Custo: <span class='highlight'>¥50.000 PP</span> por ponto extra). [Y/n]`);
+          this.print(`<br><span class='error'>Déficit detectado. Comprar ponto extra por ¥50.000? [Y/n]</span>`);
         } else {
           this.session.data.attributes[attrKey] = val;
           const total = Object.values(this.session.data.attributes).reduce((a, b) => a + b, 0);
@@ -254,287 +235,112 @@ const Terminal = {
         }
       }
     }
-
-    else if (step === 'allocating_skills') {
-      if (input === 'next') {
-        this.goToTraits();
-        return;
-      }
-      if (input === 'list') {
-        this.print("Categorias: ACADÊMICAS, SOCIAIS, INFORMAÇÃO, ESTRATÉGICAS, FÍSICAS, OCULTAÇÃO.");
-        this.print("Use 'list [categoria]' para ver perícias.");
-        return;
-      }
-      
-      const args = input.split(' ');
-      if (args[0] === 'list' && args[1]) {
-        const cat = args[1].toUpperCase();
-        if (this.systemData.skills[cat]) {
-          this.print(`Perícias [${cat}]: ${this.systemData.skills[cat].join(', ')}`);
-        } else {
-          this.print("Erro: Categoria não encontrada.", "error");
-        }
-      }
-
-      if (args[0] === 'buy' && args.length >= 3) {
-        const val = parseInt(args[args.length - 1]);
-        const skillInput = args.slice(1, args.length - 1).join(' ').toLowerCase();
-        
-        // Busca inteligente da perícia (suporta nomes parciais)
-        let skillName = null;
-        for(let cat in this.systemData.skills) {
-          const found = this.systemData.skills[cat].find(s => s.toLowerCase().includes(skillInput));
-          if(found) {
-            skillName = found;
-            break;
-          }
-        }
-
-        if(!skillName) return this.print(`Erro: Nenhuma perícia correspondente a '${skillInput}' encontrada.`, "error");
-        if(isNaN(val) || val < -3 || val > 3) return this.print("Erro: Nível inválido (-3 a 3).", "error");
-
-        const currentLvl = this.session.data.skills[skillName] || -2; // Padrão é Ruim (-2)
-        const currentCost = this.systemData.skillCosts[currentLvl + 3];
-        const newCost = this.systemData.skillCosts[val + 3];
-        const costDiff = newCost - currentCost;
-
-        if (this.session.data.skillPoints >= costDiff) {
-          this.session.data.skillPoints -= costDiff;
-          this.session.data.skills[skillName] = val;
-          this.print(`> <span class='highlight'>${skillName}</span> definido para ${this.getLvlName(val)}.`);
-          this.print(`Pontos de Perícia: ${this.session.data.skillPoints}/30`);
-        } else {
-          this.print(`Erro: Pontos insuficientes. Custo para ${this.getLvlName(val)}: ${costDiff} pts.`, "error");
-        }
-      }
-    }
-
-    else if (step === 'allocating_traits') {
-      if (input === 'finish') {
-        this.finishEnrollment();
-        return;
-      }
-      if (input === 'list') {
-        this.print("Consulte o arquivo 'traits_manifest.json' (cat traits) para ver as opções.");
-        return;
-      }
-      
-      const args = input.split(' ');
-      if (args[0] === 'add' && args.length >= 2) {
-        const name = args.slice(1).join(' ');
-        this.addTrait(name);
-      }
-    }
-
     else if (step === 'buy_points_confirm') {
       if (input === 'y' || input === 'yes') {
-        const cost = 50000;
-        if (this.session.data.pp >= cost) {
-          this.session.data.pp -= cost;
+        if (this.session.data.pp >= 50000) {
+          this.session.data.pp -= 50000;
           this.session.data.attributes[this.pendingData.attr] = this.pendingData.val;
-          this.print(`[S-SYSTEM] Transação autorizada. Saldo: ¥${this.session.data.pp}`);
+          this.print(`[OK] Saldo: ¥${this.session.data.pp}`);
           this.session.step = 'allocating_attributes';
-        } else {
-          this.print("[ERRO] Saldo insuficiente.", "error");
-          this.session.step = 'allocating_attributes';
+        } else { this.print("Erro: Saldo insuficiente.", "error"); this.session.step = 'allocating_attributes'; }
+      } else { this.session.step = 'allocating_attributes'; this.print("Cancelado."); }
+    }
+    else if (step === 'allocating_skills') {
+      if (input === 'next') { this.goToTraits(); return; }
+      const args = input.split(' ');
+      if (args[0] === 'buy' && args.length >= 3) {
+        const val = parseInt(args[args.length - 1]);
+        const skillIn = args.slice(1, args.length - 1).join(' ').toLowerCase();
+        let sName = null;
+        for(let cat in this.systemData.skills) {
+          const found = this.systemData.skills[cat].find(s => s.toLowerCase().includes(skillIn));
+          if(found) { sName = found; break; }
         }
-      } else {
-        this.session.step = 'allocating_attributes';
-        this.print("Operação cancelada.");
+        if(!sName) return this.print("Erro: Perícia não encontrada.", "error");
+        const currentLvl = this.session.data.skills[sName] || -2;
+        const diff = this.systemData.skillCosts[val+3] - this.systemData.skillCosts[currentLvl+3];
+        if (this.session.data.skillPoints >= diff) {
+          this.session.data.skillPoints -= diff;
+          this.session.data.skills[sName] = val;
+          this.print(`> ${sName}: ${this.getLvlName(val)}. Restante: ${this.session.data.skillPoints}`);
+        } else { this.print("Erro: Pontos insuficientes.", "error"); }
       }
+    }
+    else if (step === 'allocating_traits') {
+      if (input === 'finish') { this.finishEnrollment(); return; }
+      const args = input.split(' ');
+      if (args[0] === 'add' && args.length >= 2) this.addTrait(args.slice(1).join(' '));
     }
   },
 
   goToSkills() {
     this.session.step = 'allocating_skills';
-    this.print("<br>PASSO 2: ESPECIALIZAÇÕES (PERÍCIAS)");
-    this.print("Você possui <span class='highlight'>30 pontos</span>.");
-    this.print("Use: <span class='highlight'>buy [perícia] [nível]</span> (Níveis: -3 a 3)");
-    this.print("Digite <span class='highlight'>list</span> para ver categorias ou <span class='highlight'>next</span>.");
+    this.print("<br>PASSO 2: PERÍCIAS (30 pts). Use 'buy [nome] [nível]'. Digite 'next' para avançar.");
   },
 
   goToTraits() {
     this.session.step = 'allocating_traits';
-    this.print("<br>PASSO 3: BÊNÇÃOS & FALHAS");
-    this.print("Você possui <span class='highlight'>6 pontos</span> de traço.");
-    this.print("Use: <span class='highlight'>add [nome]</span>");
-    this.print("Digite <span class='highlight'>finish</span> para concluir.");
+    this.print("<br>PASSO 3: TRAÇOS (6 pts). Use 'add [nome]'. Digite 'finish' para concluir.");
   },
 
   async addTrait(name) {
     try {
       const resp = await fetch('data/traits.json');
       const data = await resp.json();
-      let trait = null;
-      let isBlessing = true;
-
-      for(let cat in data.blessings) {
-        trait = data.blessings[cat].find(t => t.name.toLowerCase() === name.toLowerCase());
-        if(trait) break;
-      }
-      if(!trait) {
-        for(let cat in data.flaws) {
-          trait = data.flaws[cat].find(t => t.name.toLowerCase() === name.toLowerCase());
-          if(trait) { isBlessing = false; break; }
-        }
-      }
-
-      if(!trait) return this.print(`Erro: Traço '${name}' não encontrado.`, "error");
-
-      // PROTEÇÃO: Verifica se já possui o traço
-      if (this.session.data.traits.includes(trait.name)) {
-        return this.print(`Aviso: Você já possui o traço '${trait.name}'. Operação abortada.`, "system");
-      }
-
-      const cost = isBlessing ? trait.cost : -trait.gain;
+      let t = null; let isB = true;
+      for(let cat in data.blessings) { t = data.blessings[cat].find(x => x.name.toLowerCase() === name.toLowerCase()); if(t) break; }
+      if(!t) { for(let cat in data.flaws) { t = data.flaws[cat].find(x => x.name.toLowerCase() === name.toLowerCase()); if(t) { isB = false; break; } } }
+      if(!t) return this.print("Erro: Traço não encontrado.", "error");
+      if(this.session.data.traits.includes(t.name)) return this.print("Aviso: Já possui este traço.");
+      const cost = isB ? t.cost : -t.gain;
       if (this.session.data.traitPoints >= cost) {
         this.session.data.traitPoints -= cost;
-        this.session.data.traits.push(trait.name);
-        this.print(`> Traço '${trait.name}' adicionado. Restante: ${this.session.data.traitPoints}`);
-      } else {
-        this.print("Erro: Pontos insuficientes.", "error");
-      }
-    } catch(e) { this.print("Erro de uplink com banco de dados.", "error"); }
+        this.session.data.traits.push(t.name);
+        this.print(`> Adicionado: ${t.name}. Restante: ${this.session.data.traitPoints}`);
+      } else { this.print("Erro: Pontos insuficientes.", "error"); }
+    } catch(e) { this.print("Erro: uplink falhou.", "error"); }
   },
 
-  getLvlName(v) {
-    return this.systemData.levels[v + 3] || "Mediano";
-  },
+  getLvlName(v) { return this.systemData.levels[v+3] || "Mediano"; },
 
   finishEnrollment() {
     this.print("<br>==========================================");
-    this.print("REGISTRO FINALIZADO. DOSSIÊ COMPILADO.");
-    this.print(`ESTUDANTE: ${this.session.data.name}`);
-    this.print(`CRÉDITOS: ¥${this.session.data.pp} PP`);
-    this.print("==========================================");
-    this.print("Digite <span class='highlight'>export</span> para salvar a ficha visual.");
-    this.session.active = false;
-    this.session.step = 'idle';
+    this.print("DOSSIÊ CONCLUÍDO. Digite 'export' para salvar.");
+    this.session.active = false; this.session.step = 'idle';
   },
 
-  exportDossier() {
-    if (this.session.data.name === 'ANONYMOUS') return this.print("Erro: Nenhum registro ativo encontrado.", "error");
-
-    this.print("Gerando representação visual do Dossiê...");
-    
-    const dossier = document.createElement('div');
-    dossier.id = 'tempDossier';
-    dossier.style.cssText = `
-      position: fixed; left: -9999px; top: 0; width: 700px; padding: 40px;
-      background: #050505; color: #00ff41; font-family: 'Fira Code', monospace;
-      border: 2px solid #008f11;
-    `;
-
-    const getLvl = (v) => this.getLvlName(v);
-
-    dossier.innerHTML = `
-      <div style="border: 1px solid #008f11; padding: 30px;">
-        <h1 style="color:#ff003c; text-align:center; border-bottom:1px solid #008f11; padding-bottom:15px; margin-bottom:20px;">ANHS STUDENT DOSSIER</h1>
-        
-        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-          <div>
-            <p>NAME: ${this.session.data.name}</p>
-            <p>CLASS: 1-D (PROVISIONAL)</p>
-          </div>
-          <div style="text-align:right;">
-            <p>CREDITS: ¥${this.session.data.pp}</p>
-            <p>STATUS: ACTIVE</p>
-          </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-          <div style="border:1px solid #003b00; padding:15px;">
-            <h3 style="color:#ff003c; font-size:0.9rem; margin-bottom:10px;">[ ATTRIBUTES ]</h3>
-            ${Object.entries(this.session.data.attributes).map(([k, v]) => `
-              <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
-                <span>${k.toUpperCase()}</span>
-                <span>${getLvl(v)} (${v >= 0 ? '+'+v : v})</span>
-              </div>
-            `).join('')}
-          </div>
-          
-          <div style="border:1px solid #003b00; padding:15px;">
-            <h3 style="color:#ff003c; font-size:0.9rem; margin-bottom:10px;">[ TRAITS ]</h3>
-            <div style="font-size:0.8rem;">${this.session.data.traits.join(', ') || 'NONE'}</div>
-          </div>
-        </div>
-
-        <div style="margin-top:20px; border:1px solid #003b00; padding:15px;">
-          <h3 style="color:#ff003c; font-size:0.9rem; margin-bottom:10px;">[ SPECIALIZED SKILLS ]</h3>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:0.75rem;">
-            ${Object.entries(this.session.data.skills).filter(([_,v]) => v > -2).map(([k, v]) => `
-              <div style="display:flex; justify-content:space-between;">
-                <span>${k}</span>
-                <span>${getLvl(v)}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-
-        <p style="text-align:center; font-size:9px; opacity:0.5; margin-top:30px;">PROPERTY OF TOKYO METROPOLITAN ADVANCED NURTURING HIGH SCHOOL - S-SYSTEM ENCRYPTION ACTIVE</p>
-      </div>
-    `;
-
-    document.body.appendChild(dossier);
-
-    if (window.html2canvas) {
-      html2canvas(dossier).then(canvas => {
-        const link = document.createElement('a');
-        link.download = `DOSSIER_${this.session.data.name.replace(/\s/g, '_')}.png`;
-        link.href = canvas.toDataURL();
-        link.click();
-        document.body.removeChild(dossier);
-        this.print("DOSSIÊ EXPORTADO COM SUCESSO. VERIFIQUE SEUS DOWNLOADS.");
-      });
+  readFile(fileName) {
+    const fileMap = { 'quick-start.log': 'quick-start', 'attributes.bin': 'attributes', 'skills.db': 'skills', 'traits.json': 'traits', 'economy.xlsm': 'economy', 'protocols.pdf': 'protocols', 'hidden-level.enc': 'hidden-level' };
+    const key = fileMap[fileName.toLowerCase()] || fileName.split('.')[0].toLowerCase();
+    if (key === 'traits' && typeof Renderers !== 'undefined') { Renderers.renderTraits(); return; }
+    if (key === 'skills' && typeof Renderers !== 'undefined') { Renderers.renderSkills(); return; }
+    this.print(`OPENING ${fileName}...`);
+    if (typeof Navigation !== 'undefined') {
+      const c = Navigation.getContent(key);
+      if (c) this.print(c); else this.print("Error: Data corrupted.", "error");
     }
   },
 
   rollDice() {
-    const dice = [];
-    let total = 0;
-    for(let i=0; i<4; i++){
-      const r = Math.floor(Math.random()*3)-1;
-      dice.push(r === 1 ? '+' : (r === -1 ? '-' : '0'));
-      total += r;
-    }
-    this.print(`EXECUTING 4dF_DICE_ROLL...`);
-    this.print(`RESULT: [${dice.join(' ')}] = <span class="highlight">${total > 0 ? '+'+total : total}</span>`);
+    const d = []; let t = 0;
+    for(let i=0; i<4; i++){ const r = Math.floor(Math.random()*3)-1; d.push(r===1?'+':(r===-1?'-':'0')); t += r; }
+    this.print(`RESULT: [${d.join(' ')}] = <span class="highlight">${t > 0 ? '+'+t : t}</span>`);
   },
 
-  readFile(fileName) {
-    const fileMap = {
-      'quick-start.log': 'quick-start',
-      'attributes.bin': 'attributes',
-      'skills.db': 'skills',
-      'traits.json': 'traits',
-      'economy.xlsm': 'economy',
-      'protocols.pdf': 'protocols',
-      'hidden-level.enc': 'hidden-level'
-    };
-
-    const targetKey = fileMap[fileName.toLowerCase()] || fileName.split('.')[0].toLowerCase();
-
-    // Lógica especial para arquivos que exigem renderização complexa
-    if (targetKey === 'traits' && typeof Renderers !== 'undefined') {
-      Renderers.renderTraits();
-      return;
-    }
-    if (targetKey === 'skills' && typeof Renderers !== 'undefined') {
-      Renderers.renderSkills();
-      return;
-    }
-
-    this.print(`OPENING ${fileName}...`);
-
-    if (typeof Navigation !== 'undefined' && Navigation.getContent) {
-      const content = Navigation.getContent(targetKey);
-      if (content) {
-        this.print(content);
-      } else {
-        this.print(`Error: File ${fileName} is corrupted or encrypted.`, "error");
-      }
-    } else {
-      this.print("Error: Navigation module not linked.", "error");
-    }
-  },
+  exportDossier() {
+    if (this.session.data.name === 'ANONYMOUS') return this.print("Erro: Nenhum dossiê ativo.", "error");
+    this.print("Generating visual output...");
+    const dossier = document.createElement('div');
+    dossier.style.cssText = "position:fixed; left:-9999px; width:700px; padding:40px; background:#050505; color:#00ff41; font-family:monospace; border:2px solid #008f11;";
+    dossier.innerHTML = `<div style='border:1px solid #008f11; padding:20px;'><h1 style='color:#ff003c; text-align:center;'>ANHS STUDENT DOSSIER</h1><p>NAME: ${this.session.data.name}</p><p>PP: ¥${this.session.data.pp}</p><br><p>[ ATTRIBUTES ]</p>${Object.entries(this.session.data.attributes).map(([k,v])=>`<p>${k.toUpperCase()}: ${this.getLvlName(v)}</p>`).join('')}<br><p>[ TRAITS ]</p>${this.session.data.traits.join(', ')}</div>`;
+    document.body.appendChild(dossier);
+    html2canvas(dossier).then(canvas => {
+      const link = document.createElement('a');
+      link.download = `DOSSIER_${this.session.data.name}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+      document.body.removeChild(dossier);
+      this.print("EXPORT_SUCCESSFUL.");
+    });
+  }
 };
