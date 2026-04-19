@@ -270,18 +270,22 @@ const Terminal = {
 
       if (args[0] === 'buy' && args.length >= 3) {
         const val = parseInt(args[args.length - 1]);
-        const skillName = args.slice(1, args.length - 1).join(' ');
+        const skillInput = args.slice(1, args.length - 1).join(' ').toLowerCase();
         
-        let found = false;
+        // Busca inteligente da perícia (suporta nomes parciais)
+        let skillName = null;
         for(let cat in this.systemData.skills) {
-          if(this.systemData.skills[cat].some(s => s.toLowerCase() === skillName.toLowerCase())) {
-            found = true; break;
+          const found = this.systemData.skills[cat].find(s => s.toLowerCase().includes(skillInput));
+          if(found) {
+            skillName = found;
+            break;
           }
         }
-        if(!found) return this.print(`Erro: Perícia '${skillName}' não encontrada.`, "error");
+
+        if(!skillName) return this.print(`Erro: Nenhuma perícia correspondente a '${skillInput}' encontrada.`, "error");
         if(isNaN(val) || val < -3 || val > 3) return this.print("Erro: Nível inválido (-3 a 3).", "error");
 
-        const currentLvl = this.session.data.skills[skillName] || -2;
+        const currentLvl = this.session.data.skills[skillName] || -2; // Padrão é Ruim (-2)
         const currentCost = this.systemData.skillCosts[currentLvl + 3];
         const newCost = this.systemData.skillCosts[val + 3];
         const costDiff = newCost - currentCost;
@@ -289,9 +293,10 @@ const Terminal = {
         if (this.session.data.skillPoints >= costDiff) {
           this.session.data.skillPoints -= costDiff;
           this.session.data.skills[skillName] = val;
-          this.print(`> ${skillName}: ${this.getLvlName(val)}. Restante: ${this.session.data.skillPoints}/30`);
+          this.print(`> <span class='highlight'>${skillName}</span> definido para ${this.getLvlName(val)}.`);
+          this.print(`Pontos de Perícia: ${this.session.data.skillPoints}/30`);
         } else {
-          this.print("Erro: Pontos insuficientes.", "error");
+          this.print(`Erro: Pontos insuficientes. Custo para ${this.getLvlName(val)}: ${costDiff} pts.`, "error");
         }
       }
     }
