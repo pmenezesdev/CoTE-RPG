@@ -9,7 +9,7 @@ const Terminal = {
   
   audio: {
     element: null,
-    playing: false,
+    playing: true,
     volume: 0.15
   },
 
@@ -21,25 +21,21 @@ const Terminal = {
     if (this.audio.element) {
       this.audio.element.volume = this.audio.volume;
       
-      // Tenta tocar automaticamente
       const startAudio = () => {
         this.audio.element.play().then(() => {
           this.audio.playing = true;
           const label = document.querySelector('#music-control span');
           if (label) label.innerText = "AMB_AUDIO: ON";
-          // Remove os listeners após o primeiro sucesso
           window.removeEventListener('click', startAudio);
           window.removeEventListener('keydown', startAudio);
         }).catch(() => {
-          // Bloqueado pelo browser
+          // Autoplay ainda bloqueado pelo browser
         });
       };
 
-      // Adiciona listeners para garantir o início na primeira interação
       window.addEventListener('click', startAudio);
       window.addEventListener('keydown', startAudio);
       
-      // Tentativa imediata
       startAudio();
     }
 
